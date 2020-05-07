@@ -1,0 +1,49 @@
+{
+  "name": "slotmachine",
+  "author": "D-Velopment",
+  "version": "0.0.1",
+  "description": "Slot Machine",
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "d-velopment@github.com:.git"
+  },
+  "nodemonConfig": {
+    "ignore": ["main.js"],
+    "delay": "1000"
+  },
+  "scripts": {
+    "rules": "standard './app/**'",
+    "dev": "nodemon -x \"npm run build\"",
+    "build": "browserify -d app/app.js -o main.js",
+    "start": "http-server .\\"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify",
+        {
+          "presets": [
+            "es2015"
+          ],
+          "sourceMap": true
+        }
+      ]
+    ]
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.3",
+    "babel-preset-es2015": "^6.24.1",
+    "babelify": "^8.0.0",
+    "browserify": "^16.5.1",
+    "detect-node": "^2.0.4",
+    "eventemitter3": "^2.0.2",
+    "express": "^4.17.1",
+    "gsap": "^1.20.2",
+    "jquery": "^3.1.1",
+    "nodemon": "^2.0.3",
+    "pixi.js": "4.2.2",
+    "pixi.js-legacy": "^5.2.1"
+  },
+  "dependencies": {}
+}
