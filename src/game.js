@@ -16,7 +16,7 @@ export default class Game extends Stage {
   init() {
     console.log('OK')
 
-    this.addElement(new SlotMachine([2,1,0]))
+    this.addElement(new SlotMachine([0,2,4]))
 
     this.animate()
   }

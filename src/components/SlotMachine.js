@@ -18,6 +18,8 @@ export default class SlotMachine {
 		var bg = new PIXI.Graphics().beginFill(0xe000e0).drawRect(0,0, this.width, this.height).endFill();
 		this.container.addChild(bg)
 
+		game.slotMachine = this
+
 		if (display !== undefined) {
 			this.drawSlotMachine(display)
 		}
@@ -30,12 +32,9 @@ export default class SlotMachine {
 			const newReel = new Reel(x)
 			this.reels.push(newReel.drawReel(display[x]))
 			this.container.addChild(newReel.container)
-			newReel.animateDown(null)
 
 		}
 		return this
 	}
-
-	// new TimelineMax().to(game.stage.children[0].children[1], 1, { y: 0 })
 
 }

@@ -27,7 +27,6 @@ export default class Symbol {
 	}
 
 	setTexture(id) {
-		console.log(id)
 		this.container.children[0].texture = this.textures[id].texture
 		this.id = id
 	}

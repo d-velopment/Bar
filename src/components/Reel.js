@@ -26,6 +26,8 @@ export default class Reel {
 
 	drawReel(topOffset) {
 		this.symbols = []
+		this._switch = topOffset + SLOTMACHINE.STRIPES[this.id].stripe.length-1 // 1 STRIPE LENGTH OFFSET FOR ROLLBACK PURPOSE
+		this._offset = this._switch * SYMBOL.HEIGHT
 		for(let i = -1; i < SLOTMACHINE.ROWS + 1; i++) {
 			const drawSymbol = new Symbol(this.getStripeByOffset(topOffset + i)[0])
 			drawSymbol.container.y = i * SYMBOL.HEIGHT
@@ -39,64 +41,49 @@ export default class Reel {
 		return this._offset
 	}
 	set offset(value) {
-		this._offset = value
+
 		this.container.y = value % SYMBOL.HEIGHT
+		this._offset = value
 
 		const _newSwitch = Math.floor(value / SYMBOL.HEIGHT)
-		console.log('>>> SWITCH', _newSwitch, this._switch)
-		if (_newSwitch !== this._switch) {
+		
+		if (_newSwitch != this._switch) {
+			const delta = _newSwitch - this._switch
+			// console.log('>>> SWITCH', delta, _newSwitch, this._switch)
 			this._switch = _newSwitch
 
-			/*
-			const symbols = this.container.children.filter(item => item.children.length !== 0)
-			symbols.forEach((item, index) => {
-				if (index !== 0) {
-					symbols[symbols.length-index].children[0].texture = symbols[symbols.length-index-1].children[0].texture
-				}
-			})
-			*/
-
-			this.symbols.forEach((item, index) => {
-				if (index !== 0) {
-					// this.symbols[this.symbols.length-index].container.children[0].texture = this.symbols[this.symbols.length-index-1].container.children[0].texture
-					// this.symbols[this.symbols.length-index].id = this.symbols[this.symbols.length-index-1].id
-					this.symbols[this.symbols.length-index].setTexture(this.symbols[this.symbols.length - index - 1].id)
-				}
-			})
-			this.symbols[0].setTexture(this.getStripeByOffset(this.symbols[0].id - 1)[0])
-			console.log(this.symbols)
+			if (delta > 0) {
+				this.symbols.forEach((item, index) => {
+					if (index !== 0) {
+						this.symbols[this.symbols.length-index].setTexture(this.symbols[this.symbols.length - index - 1].id)
+					}
+				})
+				this.symbols[0].setTexture(this.getStripeByOffset(this.symbols[0].id - 1)[0])
+			} 
+			if (delta < 0) {
+				this.symbols.forEach((item, index) => {
+					if (index !== (this.symbols.length-1)) {
+						this.symbols[index].setTexture(this.symbols[index + 1].id)
+					}
+				})
+				this.symbols[this.symbols.length-1].setTexture(this.getStripeByOffset(this.symbols[this.symbols.length-1].id + 1)[0])
+			} 
+			// console.log(this.symbols)
 		}
 		
 	}
 
-	startSpin(topOffset) {
+	spinReel(topOffset) { 
+		const duration = 4
+		const nextOffset = (SLOTMACHINE.STRIPES[this.id].stripe.length) * 8 - this.getStripeByOffset(topOffset - this.symbols[1].id)[0]  // 8 TIMES ROLL STRIPE BEFORE GET THE SYMBOL REQUIRED IS THE BEST AMOUNT TO SPIN    	
+		console.log('>>> LENGTH', nextOffset)
 		new TimelineMax()
-			.set(temp1, { offset: 0, immediateRender: false })
-			.to(temp1, 0.25, { offset: -10 })
-			.to(temp1, 2, { offset: 4000, ease: Linear.easeNone })
-			.to(temp1, 2, { offset: 5100, ease: Power2.easeOut })
-			.to(temp1, 1, { offset: 5040, ease: Power2.easeIn })
-	}
-
-	animateDown(callback) {
-
-		/*
-		const symbols = this.container.children.filter(item => item.children.length !== 0)
-
-		symbols.forEach(item => {
-			item.y += 0
-		})
-
-		console.log(symbols[0].y)
-		if (symbols[0].y >= 0) {
-			symbols.forEach(item => {
-				item.y -= SYMBOL.HEIGHT
-			})
-		}*/
-
-		// this.container.y = (this.container.y + 1) % SYMBOL.HEIGHT
-		
-		requestAnimationFrame(this.animateDown.bind(this, callback))
+			.to(this, duration * 0.0625,	{ offset: '-=10', ease: Power2.easeOut })
+			.to(this, duration * 0.0312,	{ offset: '+=10', ease: Power2.easeIn })
+			.to(this, duration * 0.45,		{ offset: `+=${nextOffset * SYMBOL.HEIGHT * 0.75}`, ease: Linear.easeNone })
+			.to(this, duration * 0.5, 		{ offset: `+=${nextOffset * SYMBOL.HEIGHT * 0.25 + 50}`, ease: Power2.easeOut })
+			.to(this, duration * 0.125,		{ offset: '-=50', ease: Power2.easeIn })
+			.add(() => console.log('>>> AFTER', this.symbols))
 	}
 
 }
