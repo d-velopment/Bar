@@ -18,4 +18,9 @@ export default class Stage {
 		this.renderer.render(this.stage)
 	}
 
+	animate() {
+		requestAnimationFrame(this.animate.bind(this));
+		this.renderer.render(this.stage);
+	}
+
 }

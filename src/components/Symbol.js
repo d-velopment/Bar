@@ -1,8 +1,10 @@
+import { SYMBOL } from "./Config"
+
 export default class Symbol {
 	constructor(id) {
 
-		this.width = 200
-		this.height = 140
+		this.width = SYMBOL.WIDTH
+		this.height = SYMBOL.HEIGHT
 		this.position = {
 			x: 0,
 			y: 0

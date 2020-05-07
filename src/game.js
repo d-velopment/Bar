@@ -1,11 +1,12 @@
 import Stage from './components/Stage'
 import Loader from './components/Loader'
-import Reel from './components/Reel'
+import SlotMachine from './components/SlotMachine'
 
 export default class Game extends Stage {
 
   constructor() {
-		super()
+    super()
+    window.game = this
 		this.width = window.innerWidth
 		this.height = window.innerHeight
     this.createRenderer()
@@ -15,17 +16,10 @@ export default class Game extends Stage {
 
   init() {
     console.log('OK')
-    
-    /* 
-    const testSymbol = new Symbol(0)
-    console.log(testSymbol)
-    this.addElement(testSymbol)
-    */
 
-    this.addElement(new Reel(0).drawReel(2))
-    this.addElement(new Reel(1).drawReel(0))
-    this.addElement(new Reel(2).drawReel(4))
+    this.addElement(new SlotMachine([2,1,0]))
 
+    this.animate()
   }
 
 }

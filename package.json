@@ -8,6 +8,7 @@
     "type": "git",
     "url": "d-velopment@github.com:.git"
   },
+  "private": true,
   "nodemonConfig": {
     "ignore": [
       "main.js"
@@ -41,7 +42,7 @@
     "detect-node": "^2.0.4",
     "eventemitter3": "^2.0.2",
     "express": "^4.17.1",
-    "gsap": "^1.20.2",
+    "gsap": "^1.20.6",
     "jquery": "^3.1.1",
     "nodemon": "^2.0.3",
     "pixi.js": "4.2.2",
