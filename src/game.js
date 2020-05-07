@@ -1,6 +1,6 @@
 import Stage from './components/Stage'
 import Loader from './components/Loader'
-import Symbol from './components/Symbol'
+import Reel from './components/Reel'
 
 export default class Game extends Stage {
 
@@ -15,9 +15,17 @@ export default class Game extends Stage {
 
   init() {
     console.log('OK')
+    
+    /* 
     const testSymbol = new Symbol(0)
     console.log(testSymbol)
     this.addElement(testSymbol)
+    */
+
+    this.addElement(new Reel(0).drawReel(2))
+    this.addElement(new Reel(1).drawReel(0))
+    this.addElement(new Reel(2).drawReel(4))
+
   }
 
 }

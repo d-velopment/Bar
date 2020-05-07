@@ -9,13 +9,15 @@
     "url": "d-velopment@github.com:.git"
   },
   "nodemonConfig": {
-    "ignore": ["main.js"],
+    "ignore": [
+      "main.js"
+    ],
     "delay": "1000"
   },
   "scripts": {
-    "rules": "standard './app/**'",
+    "rules": "standard './src/**'",
     "dev": "nodemon -x \"npm run build\"",
-    "build": "browserify -d app/app.js -o main.js",
+    "build": "browserify -d src/index.js -o main.js",
     "start": "http-server .\\"
   },
   "browserify": {

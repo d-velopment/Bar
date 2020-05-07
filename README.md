@@ -1,6 +1,6 @@
 # Bar Slot Machine
 
-5x3 slot machine with 5 symbols.
+3x3 slot machine with 5 symbols.
 
 ## Play
 
@@ -8,6 +8,10 @@ To play the latest compiled game please run the command:
 
 ```
 npm start
+```
+*Be sure you have installed [node.js](http://nodejs.org) and http-server globally by command:*
+```
+npm install http-server -g
 ```
 
 ## Development

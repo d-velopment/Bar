@@ -1,8 +1,8 @@
 export default class Symbol {
 	constructor(id) {
 
-		this.width = 141
-		this.height = 121
+		this.width = 200
+		this.height = 140
 		this.position = {
 			x: 0,
 			y: 0
@@ -18,8 +18,8 @@ export default class Symbol {
 		this.container = new PIXI.Container()
 		this.container.position.x = this.position.x
 		this.container.position.y = this.position.y
-		this.container.pivot.x = this.width / 2
-		this.container.pivot.y = this.height / 2
+		this.container.pivot.x = -this.width / 2
+		this.container.pivot.y = -this.height / 2
 
 		if (id !== undefined) {
 			this.drawSymbol(id)
@@ -27,7 +27,10 @@ export default class Symbol {
 	}
 
 	drawSymbol(id) {
+		console.log('ID',id)
 		const sprite = new PIXI.Sprite(this.textures[id].texture)
+		sprite.anchor.set(0.5)
 		this.container.addChild(sprite)
+		return this
 	}
 }
