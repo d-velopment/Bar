@@ -37,4 +37,15 @@ export default class SlotMachine {
 		return this
 	}
 
+	spinSlotMachine(display) {
+		const timeline = new TimelineMax()
+		let _display = (display !== undefined) ? display : []
+		game.slotMachine.reels.forEach((reel, index) => {
+			_display.push(Math.floor(Math.random() * 5))
+			timeline.add(reel.spinReel(_display[index]), index * 0.1)
+		})
+		console.log('>>> DISPLAY', _display.slice(0, 3))
+		return timeline
+	}
+
 }

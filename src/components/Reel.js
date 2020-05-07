@@ -74,15 +74,15 @@ export default class Reel {
 	}
 
 	spinReel(topOffset) { 
-		const duration = 4
-		const nextOffset = (SLOTMACHINE.STRIPES[this.id].stripe.length) * 8 - this.getStripeByOffset(topOffset - this.symbols[1].id)[0]  // 8 TIMES ROLL STRIPE BEFORE GET THE SYMBOL REQUIRED IS THE BEST AMOUNT TO SPIN    	
-		console.log('>>> LENGTH', nextOffset)
-		new TimelineMax()
-			.to(this, duration * 0.0625,	{ offset: '-=10', ease: Power2.easeOut })
-			.to(this, duration * 0.0312,	{ offset: '+=10', ease: Power2.easeIn })
+		const duration = 2.5 + this.id
+		const nextOffset = (SLOTMACHINE.STRIPES[this.id].stripe.length) * (7 + this.id * 2) - this.getStripeByOffset(topOffset - this.symbols[1].id)[0]  // 8 TIMES ROLL STRIPE BEFORE GET THE SYMBOL REQUIRED IS THE BEST AMOUNT TO SPIN    	
+		
+		return new TimelineMax()
+			.to(this, duration * 0.03,	{ offset: '-=10', ease: Power2.easeOut })
+			.to(this, duration * 0.01,	{ offset: '+=10', ease: Power2.easeIn })
 			.to(this, duration * 0.45,		{ offset: `+=${nextOffset * SYMBOL.HEIGHT * 0.75}`, ease: Linear.easeNone })
 			.to(this, duration * 0.5, 		{ offset: `+=${nextOffset * SYMBOL.HEIGHT * 0.25 + 50}`, ease: Power2.easeOut })
-			.to(this, duration * 0.125,		{ offset: '-=50', ease: Power2.easeIn })
+			.to(this, duration * 0.12,		{ offset: '-=50', ease: Power2.easeIn })
 			.add(() => console.log('>>> AFTER', this.symbols))
 	}
 
