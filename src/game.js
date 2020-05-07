@@ -10,7 +10,6 @@ export default class Game extends Stage {
 		this.width = window.innerWidth
 		this.height = window.innerHeight
     this.createRenderer()
-    console.log('>>> GAME', this)
 		new Loader(this.init.bind(this))
   }
 

@@ -7,10 +7,7 @@ export default class SlotMachine {
 
 		this.width = SYMBOL.WIDTH * SLOTMACHINE.COLS
 		this.height = SYMBOL.HEIGHT * SLOTMACHINE.ROWS
-		this.position = {
-			x: 0,
-			y: 0
-		}
+		this.position = { x: 0, y: 0 }
 		this.reels = []
 
 		this.container = new PIXI.Container()
@@ -33,9 +30,12 @@ export default class SlotMachine {
 			const newReel = new Reel(x)
 			this.reels.push(newReel.drawReel(display[x]))
 			this.container.addChild(newReel.container)
+			newReel.animateDown(null)
 
 		}
 		return this
 	}
+
+	// new TimelineMax().to(game.stage.children[0].children[1], 1, { y: 0 })
 
 }

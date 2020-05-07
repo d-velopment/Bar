@@ -2,13 +2,11 @@ import { SYMBOL } from "./Config"
 
 export default class Symbol {
 	constructor(id) {
+		this.id = id
 
 		this.width = SYMBOL.WIDTH
 		this.height = SYMBOL.HEIGHT
-		this.position = {
-			x: 0,
-			y: 0
-		}
+		this.position = { x: 0, y: 0 }
 		this.textures = [
 			{ id: 0, texture:PIXI.loader.resources['3xBAR'].texture },
 			{ id: 1, texture:PIXI.loader.resources['BAR'].texture },
@@ -28,8 +26,14 @@ export default class Symbol {
 		}
 	}
 
+	setTexture(id) {
+		console.log(id)
+		this.container.children[0].texture = this.textures[id].texture
+		this.id = id
+	}
+
 	drawSymbol(id) {
-		console.log('ID',id)
+		this.id = id
 		const sprite = new PIXI.Sprite(this.textures[id].texture)
 		sprite.anchor.set(0.5)
 		this.container.addChild(sprite)
