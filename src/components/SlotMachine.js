@@ -1,5 +1,4 @@
-import { SYMBOL, SLOTMACHINE } from './Config'
-import { TweenMax, TimelineLite, Power2, Elastic, CSSPlugin } from "gsap/TweenMax"
+import { APP, SYMBOL, SLOTMACHINE } from './Config'
 import Reel from './Reel'
 
 export default class SlotMachine {
@@ -15,8 +14,10 @@ export default class SlotMachine {
 		this.container.pivot.x = this.width / 2
 		this.container.pivot.y = this.height / 2
 
-		var bg = new PIXI.Graphics().beginFill(0xe000e0).drawRect(0,0, this.width, this.height).endFill();
-		this.container.addChild(bg)
+		if (APP.DEBUG) {
+			var bg = new PIXI.Graphics().beginFill(0xe000e0).drawRect(0,0, this.width, this.height).endFill();
+			this.container.addChild(bg)
+		}
 
 		game.slotMachine = this
 
@@ -44,7 +45,7 @@ export default class SlotMachine {
 			_display.push(Math.floor(Math.random() * 5))
 			timeline.add(reel.spinReel(_display[index]), index * 0.1)
 		})
-		console.log('>>> DISPLAY', _display.slice(0, 3))
+		if (APP.DEBUG) console.log('>>> DISPLAY', _display.slice(0, 3))
 		return timeline
 	}
 

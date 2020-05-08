@@ -1,3 +1,7 @@
+export const APP = {
+	DEBUG: true
+}
+
 export const SYMBOL = {
 	WIDTH: 180,
 	HEIGHT: 140

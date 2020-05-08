@@ -1,4 +1,5 @@
-import { SYMBOL, SLOTMACHINE } from './Config'
+import { APP, SYMBOL, SLOTMACHINE } from './Config'
+import { TweenMax, TimelineLite, Power2, Elastic, CSSPlugin } from "gsap/TweenMax"
 import Symbol from './Symbol'
 
 export default class Reel {
@@ -14,10 +15,11 @@ export default class Reel {
 		this.container = new PIXI.Container()
 		this.container.position = this.position
 
-		var bg = new PIXI.Graphics().beginFill(0x8bc5ff).drawRect(0,0, this.width, this.height).endFill();
-		this.container.addChild(bg)
-
-		console.log('>>> REEL', id, this)
+		if (APP.DEBUG) {
+			var bg = new PIXI.Graphics().beginFill(0x8bc5ff).drawRect(0,0, this.width, this.height).endFill();
+			this.container.addChild(bg)
+		}
+		if (APP.DEBUG) console.log('>>> REEL', id, this)
 	}
 
 	getStripeByOffset(topOffset) {
@@ -49,7 +51,7 @@ export default class Reel {
 		
 		if (_newSwitch != this._switch) {
 			const delta = _newSwitch - this._switch
-			// console.log('>>> SWITCH', delta, _newSwitch, this._switch)
+			// if (APP.DEBUG) console.log('>>> SWITCH', delta, _newSwitch, this._switch)
 			this._switch = _newSwitch
 
 			if (delta > 0) {
@@ -68,22 +70,25 @@ export default class Reel {
 				})
 				this.symbols[this.symbols.length-1].setTexture(this.getStripeByOffset(this.symbols[this.symbols.length-1].id + 1)[0])
 			} 
-			// console.log(this.symbols)
+			// if (APP.DEBUG) console.log(this.symbols)
 		}
 		
 	}
 
 	spinReel(topOffset) { 
-		const duration = 2.5 + this.id
-		const nextOffset = (SLOTMACHINE.STRIPES[this.id].stripe.length) * (7 + this.id * 2) - this.getStripeByOffset(topOffset - this.symbols[1].id)[0]  // 8 TIMES ROLL STRIPE BEFORE GET THE SYMBOL REQUIRED IS THE BEST AMOUNT TO SPIN    	
+		const duration = 2.5 + this.id * 0.5
+		const nextOffset = (SLOTMACHINE.STRIPES[this.id].stripe.length) * (7 + this.id * 2) - this.getStripeByOffset(topOffset - this.symbols[1].id)[0] // VISUALLY BEST SPIN SCENARIO    	
 		
 		return new TimelineMax()
 			.to(this, duration * 0.03,	{ offset: '-=10', ease: Power2.easeOut })
 			.to(this, duration * 0.01,	{ offset: '+=10', ease: Power2.easeIn })
-			.to(this, duration * 0.45,		{ offset: `+=${nextOffset * SYMBOL.HEIGHT * 0.75}`, ease: Linear.easeNone })
-			.to(this, duration * 0.5, 		{ offset: `+=${nextOffset * SYMBOL.HEIGHT * 0.25 + 50}`, ease: Power2.easeOut })
-			.to(this, duration * 0.12,		{ offset: '-=50', ease: Power2.easeIn })
-			.add(() => console.log('>>> AFTER', this.symbols))
+			.to(this, duration * 0.45,	{ offset: `+=${nextOffset * SYMBOL.HEIGHT * 0.75}`, ease: Linear.easeNone })
+			.to(this, duration * 0.5, 	{ offset: `+=${nextOffset * SYMBOL.HEIGHT * 0.25 + 50}`, ease: Power2.easeOut })
+			.to(this, duration * 0.12,	{ offset: '-=50', ease: Power2.easeIn })
+			.add(() => {
+				if (APP.DEBUG) 
+					console.log('>>> AFTER', this.symbols)
+			})
 	}
 
 }
