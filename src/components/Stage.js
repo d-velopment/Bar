@@ -1,8 +1,10 @@
+import { APP, SYMBOL, SLOTMACHINE } from './Config'
 export default class Stage {
 	constructor() {
-		this.width = null;
-		this.height = null;
-		this.stage = new PIXI.Container();
+		this.width = null
+		this.height = null
+		this.view = new PIXI.Container()
+		this.stage = this.view.addChild(new PIXI.Container())
 	}
 
 	createRenderer() {
@@ -13,14 +15,20 @@ export default class Stage {
 		this.renderer.render(this.stage)
 	}
 
+	addMask(element) {
+		if (APP.DEBUG) return
+		var bg = new PIXI.Graphics().beginFill(0xe0e000).drawRect(0,0, element.width, element.height).endFill()
+		element.container.addChild(bg)
+		element.container.mask = bg
+	}
+
 	addElement(item) {
 		this.stage.addChild(item.container)
 		this.renderer.render(this.stage)
 	}
 
 	animate() {
-		requestAnimationFrame(this.animate.bind(this));
-		this.renderer.render(this.stage);
+		requestAnimationFrame(this.animate.bind(this))
+		this.renderer.render(this.stage)
 	}
-
 }

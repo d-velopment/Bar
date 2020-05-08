@@ -1,6 +1,7 @@
 import Stage from './components/Stage'
 import Loader from './components/Loader'
 import SlotMachine from './components/SlotMachine'
+import SpinButton from './components/SpinButton'
 
 export default class Game extends Stage {
 
@@ -10,15 +11,15 @@ export default class Game extends Stage {
 		this.width = window.innerWidth
 		this.height = window.innerHeight
     this.createRenderer()
-		new Loader(this.init.bind(this))
+    new Loader(this.init.bind(this))
   }
 
   init() {
-    console.log('OK')
-
-    this.addElement(new SlotMachine([0,2,4]))
-
+    const slotMachine = new SlotMachine([0,2,4])
+    this.addElement(slotMachine)
+    this.addMask(slotMachine)
+    this.addElement(new SpinButton())
     this.animate()
+    console.log('OK')
   }
-
 }

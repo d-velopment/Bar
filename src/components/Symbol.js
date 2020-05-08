@@ -7,13 +7,7 @@ export default class Symbol {
 		this.width = SYMBOL.WIDTH
 		this.height = SYMBOL.HEIGHT
 		this.position = { x: 0, y: 0 }
-		this.textures = [
-			{ id: 0, texture:PIXI.loader.resources['3xBAR'].texture },
-			{ id: 1, texture:PIXI.loader.resources['BAR'].texture },
-			{ id: 2, texture:PIXI.loader.resources['2xBAR'].texture },
-			{ id: 3, texture:PIXI.loader.resources['7'].texture },
-			{ id: 4, texture:PIXI.loader.resources['Cherry'].texture }
-		]
+		this.textures = SYMBOL.LIST.filter(item => item.id !== undefined).map(item => ({ id: item.id, texture: PIXI.loader.resources[item.name].texture }))
 		
 		this.container = new PIXI.Container()
 		this.container.position.x = this.position.x

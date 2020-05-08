@@ -16,10 +16,10 @@ export default class Reel {
 		this.container.position = this.position
 
 		if (APP.DEBUG) {
-			var bg = new PIXI.Graphics().beginFill(0x8bc5ff).drawRect(0,0, this.width, this.height).endFill();
+			var bg = new PIXI.Graphics().beginFill(0x8bc5ff).drawRect(0,0, this.width, this.height).endFill()
 			this.container.addChild(bg)
+			console.log('>>> REEL', id, this)
 		}
-		if (APP.DEBUG) console.log('>>> REEL', id, this)
 	}
 
 	getStripeByOffset(topOffset) {
@@ -51,7 +51,6 @@ export default class Reel {
 		
 		if (_newSwitch != this._switch) {
 			const delta = _newSwitch - this._switch
-			// if (APP.DEBUG) console.log('>>> SWITCH', delta, _newSwitch, this._switch)
 			this._switch = _newSwitch
 
 			if (delta > 0) {
@@ -70,7 +69,6 @@ export default class Reel {
 				})
 				this.symbols[this.symbols.length-1].setTexture(this.getStripeByOffset(this.symbols[this.symbols.length-1].id + 1)[0])
 			} 
-			// if (APP.DEBUG) console.log(this.symbols)
 		}
 		
 	}

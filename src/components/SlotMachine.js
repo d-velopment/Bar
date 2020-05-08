@@ -15,7 +15,7 @@ export default class SlotMachine {
 		this.container.pivot.y = this.height / 2
 
 		if (APP.DEBUG) {
-			var bg = new PIXI.Graphics().beginFill(0xe000e0).drawRect(0,0, this.width, this.height).endFill();
+			var bg = new PIXI.Graphics().beginFill(0xe000e0).drawRect(0,0, this.width, this.height).endFill()
 			this.container.addChild(bg)
 		}
 
@@ -24,6 +24,12 @@ export default class SlotMachine {
 		if (display !== undefined) {
 			this.drawSlotMachine(display)
 		}
+
+		document.addEventListener("Spin", (event) => { 
+			if (APP.DEBUG) console.log(">>> SPIN", event)
+			this.spinSlotMachine(event.detail.display)
+		})
+
 	}
 
 	drawSlotMachine(display) {
@@ -40,12 +46,19 @@ export default class SlotMachine {
 
 	spinSlotMachine(display) {
 		const timeline = new TimelineMax()
+
 		let _display = (display !== undefined) ? display : []
+		if (APP.DEBUG) console.log('>>> DISPLAY', _display.slice(0, 3))
+
 		game.slotMachine.reels.forEach((reel, index) => {
 			_display.push(Math.floor(Math.random() * 5))
 			timeline.add(reel.spinReel(_display[index]), index * 0.1)
 		})
-		if (APP.DEBUG) console.log('>>> DISPLAY', _display.slice(0, 3))
+
+		timeline.add(() => { 
+			if (APP.DEBUG) console.log('>>> DISPATCH STOP')
+			document.dispatchEvent(new CustomEvent("Stop"))
+		})
 		return timeline
 	}
 
