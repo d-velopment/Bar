@@ -21,10 +21,10 @@ export default class Game extends Stage {
     this.addElement(slotMachine)
     this.addMask(slotMachine)
 
-    this.addElement(new SpinButton())
-
     this.addElement(new Paylines())
 
+    this.addElement(new SpinButton())
+    
     this.runAnimate()
     if (APP.DEBUG) console.log('>>> READY')
   }

@@ -1,5 +1,5 @@
 export const APP = {
-  DEBUG: true
+  DEBUG: false
 }
 
 export const SYMBOL = {
