@@ -21,6 +21,9 @@
     "build": "browserify -d src/index.js -o main.js",
     "start": "http-server .\\"
   },
+  "standard": {
+    "globals": [ "game", "PIXI", "TimelineMax", "Linear", "Power2", "Bounce", "CustomEvent", "Event" ]
+  },
   "browserify": {
     "transform": [
       [
