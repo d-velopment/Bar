@@ -1,6 +1,10 @@
 import { APP, SYMBOL, SLOTMACHINE } from './Config'
 import Symbol from './Symbol'
 
+export const getStripeByOffset = (id, topOffset) => {
+	return SLOTMACHINE.STRIPES[id].stripe.slice(topOffset, SLOTMACHINE.STRIPES[id].stripe.length).concat(SLOTMACHINE.STRIPES[id].stripe.slice(0, topOffset))
+}
+
 export default class Reel {
   constructor (id) {
     this.id = id
@@ -21,16 +25,12 @@ export default class Reel {
     }
   }
 
-  getStripeByOffset (topOffset) {
-    return SLOTMACHINE.STRIPES[this.id].stripe.slice(topOffset, SLOTMACHINE.STRIPES[this.id].stripe.length).concat(SLOTMACHINE.STRIPES[this.id].stripe.slice(0, topOffset))
-  }
-
   drawReel (topOffset) {
     this.symbols = []
     this._switch = topOffset + SLOTMACHINE.STRIPES[this.id].stripe.length - 1 // 1 STRIPE LENGTH OFFSET FOR ROLLBACK PURPOSE
     this._offset = this._switch * SYMBOL.HEIGHT
     for (let i = -1; i < SLOTMACHINE.ROWS + 1; i++) {
-      const drawSymbol = new Symbol(this.getStripeByOffset(topOffset + i)[0])
+      const drawSymbol = new Symbol(getStripeByOffset(this.id, topOffset + i)[0])
       drawSymbol.container.y = i * SYMBOL.HEIGHT
       this.symbols.push(drawSymbol)
       this.container.addChild(drawSymbol.container)
@@ -58,7 +58,7 @@ export default class Reel {
             this.symbols[this.symbols.length - index].setTexture(this.symbols[this.symbols.length - index - 1].id)
           }
         })
-        this.symbols[0].setTexture(this.getStripeByOffset(this.symbols[0].id - 1)[0])
+        this.symbols[0].setTexture(getStripeByOffset(this.id, this.symbols[0].id - 1)[0])
       }
       if (delta < 0) {
         this.symbols.forEach((item, index) => {
@@ -66,14 +66,14 @@ export default class Reel {
             this.symbols[index].setTexture(this.symbols[index + 1].id)
           }
         })
-        this.symbols[this.symbols.length - 1].setTexture(this.getStripeByOffset(this.symbols[this.symbols.length - 1].id + 1)[0])
+        this.symbols[this.symbols.length - 1].setTexture(getStripeByOffset(this.id, this.symbols[this.symbols.length - 1].id + 1)[0])
       }
     }
   }
 
   spinReel (topOffset) {
     const duration = 2.5 + this.id * 0.5
-    const nextOffset = (SLOTMACHINE.STRIPES[this.id].stripe.length) * (7 + this.id * 2) - this.getStripeByOffset(topOffset - this.symbols[1].id)[0] // VISUALLY BEST SPIN SCENARIO
+    const nextOffset = (SLOTMACHINE.STRIPES[this.id].stripe.length) * (7 + this.id * 2) - getStripeByOffset(this.id, topOffset - this.symbols[1].id)[0] // VISUALLY BEST SPIN SCENARIO
 
     return new TimelineMax()
       .to(this, duration * 0.03, { offset: '-=10', ease: Power2.easeOut })

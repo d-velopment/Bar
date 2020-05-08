@@ -1,11 +1,16 @@
-import { APP, SYMBOL, SLOTMACHINE } from './Config'
+import { APP, SYMBOL, SLOTMACHINE, PAYLINES } from './Config'
+import { getStripeByOffset } from './Reel'
+
+const arrayTranspose = arr => arr.map((col, i) => arr.map(row => row[i]))
+const arrayMatch = (arr, target) => target.every(v => arr.includes(v))
 
 export default class Paylines {
   constructor () {
     this.width = SYMBOL.WIDTH * SLOTMACHINE.COLS
     this.height = SYMBOL.HEIGHT * SLOTMACHINE.ROWS
     this.position = { x: 0, y: 0 }
-    this.reels = []
+    this.cells = []
+    this.winLines = []
 
     this.container = new PIXI.Container()
     this.container.position = this.position
@@ -26,7 +31,61 @@ export default class Paylines {
     })
   }
 
-  playPaylines (display) {
-
+  getSlotMachineCells (display) {
+    return arrayTranspose(display.map((element, index) => (
+      getStripeByOffset(index, element).slice(0, SLOTMACHINE.ROWS)
+    )))
   }
+
+  playPaylines (display) {
+    this.cells = this.getSlotMachineCells(display)
+    if (APP.DEBUG) console.log('>>> CELLS', this.cells)
+
+    this.winLines = []
+    this.cells.slice().forEach((symbols, currentRow) => {
+      console.log('>', currentRow, symbols)
+      PAYLINES.LIST.forEach(payline => {
+        
+        console.log('>>>', payline, payline.row)
+        // 1.FIXED ROWS
+        if ((payline.row == currentRow) && (arrayMatch(payline.symbols, symbols))) {
+          payline.rowFound = currentRow
+          console.log('>>>>>> FIXED', payline)
+          this.winLines.push(payline)
+        }
+
+        // 2.NO ROWS SET, LENGTH EQUAL
+        if ((payline.row == undefined) && (symbols.length == payline.symbols.length) && (arrayMatch(payline.symbols, symbols))) {
+          payline.rowFound = currentRow
+          console.log('>>>>>> EQUAL', payline)
+          this.winLines.push(payline)
+        }
+
+        // 3.NO ROWS SET, ANY SYMBOLS
+        if ((payline.row == undefined) && (symbols.length !== payline.symbols.length)) {
+          let matchPositions = []
+          console.log(payline.symbols)
+          payline.symbols.forEach((symbol, index) => {
+            console.log(symbols, symbol)
+            const position = symbols.findIndex(element => element == symbol)
+            if (position !== -1) {
+              matchPositions.push(position)
+              symbols[position] = -1
+            }
+          })
+          
+          if (matchPositions.length == payline.symbols.length) {
+            payline.rowFound = currentRow
+            payline.positions = matchPositions
+            console.log('>>>>>> ANY', symbols, payline)
+            this.winLines.push(payline)
+          }
+        }
+
+      })
+    })
+    if (APP.DEBUG) console.log('>>> CELLS', this.cells)
+    console.log(this.winLines)
+  }
+
 }

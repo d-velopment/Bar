@@ -6,7 +6,7 @@ import SpinButton from './components/SpinButton'
 import Paylines from './components/Paylines'
 
 export default class Game extends Stage {
-  constructor (App) {
+  constructor () {
     /* eslint-disable no-new */
     super()
     window.game = this

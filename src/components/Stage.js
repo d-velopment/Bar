@@ -1,4 +1,5 @@
 import { APP } from './Config'
+
 export default class Stage {
   constructor () {
     this.width = null
