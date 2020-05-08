@@ -1,5 +1,6 @@
 import { APP, SYMBOL, SLOTMACHINE, PAYLINES } from './Config'
 import { getStripeByOffset } from './Reel'
+import { winPlates } from './Paytable'
 import { TimelineMax } from 'gsap'
 
 const arrayTranspose = arr => arr.map((col, i) => arr.map(row => row[i]))
@@ -14,13 +15,21 @@ export default class Paylines {
     this.winAmount = 0
     this.iterateTimeline = null
 
+    this.paytable = new PIXI.Container()
+    this.paytable.position = { x: this.width, y: 0 }
+    this.paytable.pivot.x = this.width / 4
+    this.paytable.pivot.y = this.height / 2
+    const bg = new PIXI.Graphics().beginFill(0xff00ff).drawRect(0, 0, this.width / 2, this.height).endFill()
+    bg.alpha = 0.25
+    this.paytable.addChild(bg)
+
     this.container = new PIXI.Container()
     this.container.position = this.position
     this.container.pivot.x = this.width / 2
     this.container.pivot.y = this.height / 2
 
     if (APP.DEBUG) {
-      var bg = new PIXI.Graphics().beginFill(0x0000ff).drawRect(0, 0, this.width, this.height).endFill()
+      const bg = new PIXI.Graphics().beginFill(0x0000ff).drawRect(0, 0, this.width, this.height).endFill()
       bg.alpha = 0.125
       this.container.addChild(bg)
     }
@@ -45,6 +54,7 @@ export default class Paylines {
       this.iterateTimeline = null
     }
     this.winLines.forEach((line, index) => {
+      winPlates[line.id].alpha = 0
       line.drawLine.forEach(draw => this.container.removeChild(draw))
     })
     this.winLines = []
@@ -92,12 +102,12 @@ export default class Paylines {
   }
 
   drawPaylines() {
-    const thickness = 7
+    const thickness = 8
     this.winLines.forEach((line, index) => {
 
       const drawLine = new PIXI.Graphics().beginFill(0xffffff)
-        .drawRect(0, (SYMBOL.HEIGHT / 2) + (line.rowFound) * (SYMBOL.HEIGHT) - thickness / 2, 
-        SLOTMACHINE.COLS * SYMBOL.WIDTH, thickness).endFill()
+        .drawRoundedRect(0, (SYMBOL.HEIGHT / 2) + (line.rowFound) * (SYMBOL.HEIGHT) - thickness / 2, 
+        SLOTMACHINE.COLS * SYMBOL.WIDTH, thickness, 4).endFill()
       drawLine.alpha = 0
       this.container.addChild(drawLine)
 
@@ -121,9 +131,13 @@ export default class Paylines {
     this.iterateTimeline = new TimelineMax({ repeat: -1 })
     this.winLines.forEach((line, index) => {
       this.iterateTimeline
-        .to(line.drawLine, 0.25, { alpha: 1 })
+        .addLabel(`win${index}`)
+        .to(line.drawLine, 0.25, { alpha: 1 }, `win${index}`)
+        .to(winPlates[line.id], 0.25, { alpha: 1 }, `win${index}`)
         .to(line.drawLine, 0.75, { })
-        .to(line.drawLine, 0.25, { alpha: 0 })
+        .addLabel(`hide${index}`)
+        .to(line.drawLine, 0.25, { alpha: 0 }, `hide${index}`)
+        .to(winPlates[line.id], 0.25, { alpha: 0 }, `hide${index}`)
     })
     return this.iterateTimeline
   }

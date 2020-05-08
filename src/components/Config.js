@@ -27,9 +27,9 @@ export const SLOTMACHINE = {
 
 export const PAYLINES = {
   LIST: [
+    { id: 2, row: 2, symbols: [4, 4, 4], win: 4000 },
     { id: 0, row: 0, symbols: [4, 4, 4], win: 2000 },
     { id: 1, row: 1, symbols: [4, 4, 4], win: 1000 },
-    { id: 2, row: 2, symbols: [4, 4, 4], win: 4000 },
     { id: 3, symbols: [3, 3, 3], win: 150 },
     { id: 4, symbols: [4, 3], win: 75 },
     { id: 5, symbols: [0, 0, 0], win: 50 },

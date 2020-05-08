@@ -4,6 +4,7 @@ import Loader from './components/Loader'
 import SlotMachine from './components/SlotMachine'
 import SpinButton from './components/SpinButton'
 import Paylines from './components/Paylines'
+import Paytable from './components/Paytable'
 
 export default class Game extends Stage {
   constructor () {
@@ -22,6 +23,8 @@ export default class Game extends Stage {
     this.addMask(slotMachine)
 
     this.addElement(new Paylines())
+
+    this.addElement(new Paytable())
 
     this.addElement(new SpinButton())
     
