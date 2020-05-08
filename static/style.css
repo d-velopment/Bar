@@ -1,0 +1,47 @@
+html, body { 
+	margin: 0px; 
+	padding: 0px; 
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 24px;
+	color: #fff;
+}
+
+img {
+	width: 30px;
+}
+
+.panel {
+	position: fixed;
+	display: flex;
+	background-color: #27356f;
+	width: 100vw;
+	height: 40px;
+	overflow: visible;
+  white-space: nowrap;
+	z-index: 1;
+	flex-wrap: nowrap;
+}
+
+.logo {
+	margin: 7px 50px 0px 7px;
+	overflow: hidden;
+}
+
+.balance {
+	margin: 4px 0px 0px 7px;
+}
+
+input[type=text] {
+	background-color: transparent;
+	border: none;
+	font-size: 24px;
+	color: rgb(255, 235, 192);
+	margin-left: 10px;
+	width: 150px;
+}
+
+input:focus, input[type]:focus {   
+	border-color: rgba(255, 255, 255, 1);
+	box-shadow: 0 1px 1px rgba(255, 255, 255, 0.075) inset, 0 0 8px rgba(255, 255, 255, 1);
+	outline: 0 none;
+}

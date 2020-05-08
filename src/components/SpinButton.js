@@ -28,6 +28,11 @@ export default class SpinButton {
     this.container.on('mouseout', this.reset.bind(this))
     this.reset()
 
+    document.addEventListener('Spin', (event) => {
+      if (APP.DEBUG) console.log('>>> SPIN BUTTON ON SPIN (LISTEN TO ITSELF)', event)
+      if (event.defaultPrevented) this.reset()
+    })
+
     document.addEventListener('Stop', (event) => {
       if (APP.DEBUG) console.log('>>> SPIN BUTTON ON STOP', event)
       this.reset()
@@ -40,7 +45,8 @@ export default class SpinButton {
 
     if (APP.DEBUG) console.log('>>> DISPATCH SPIN')
     document.dispatchEvent(new CustomEvent('Spin', {
-      detail: { display: _display }
+      detail: { display: _display },
+      cancelable: true
     }))
 
     new TimelineMax()

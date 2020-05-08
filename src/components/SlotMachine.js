@@ -26,6 +26,7 @@ export default class SlotMachine {
     }
 
     document.addEventListener('Spin', (event) => {
+      if (event.defaultPrevented) return
       if (APP.DEBUG) console.log('>>> SPIN', event)
       this.spinSlotMachine(event.detail.display)
     })

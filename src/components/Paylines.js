@@ -37,6 +37,7 @@ export default class Paylines {
     game.paylines = this
 
     document.addEventListener('Spin', (event) => {
+      if (event.defaultPrevented) return
       if (APP.DEBUG) console.log('>>> PAYLINES ON SPIN', event)
       this.resetPaylines()
     })
@@ -47,7 +48,7 @@ export default class Paylines {
     })
   }
 
-  resetPaylines() {
+  resetPaylines () {
     if (this.iterateTimeline !== null) {
       this.iterateTimeline.stop()
       this.iterateTimeline.kill()
@@ -66,7 +67,7 @@ export default class Paylines {
     )))
   }
 
-  calculatePaylines(display) {
+  calculatePaylines (display) {
     this.cells = this.getSlotMachineCells(display)
     if (APP.DEBUG) console.log('>>> CELLS', this.cells)
 
@@ -94,20 +95,24 @@ export default class Paylines {
           winLine.rowFound = currentRow
           winLine.positions = matchPositions
           if (APP.DEBUG) console.log('    >>> PAYLINE', winLine)
+          this.winAmount += payline.win
           this.winLines.push(winLine)
         }
       })
     })
+
+    balance.win.value = this.winAmount * parseInt(balance.bet.value)
+    balance.amount.value = parseInt(balance.amount.value) + this.winAmount * parseInt(balance.bet.value)
+
     return this.winLines.length !== 0
   }
 
-  drawPaylines() {
+  drawPaylines () {
     const thickness = 8
     this.winLines.forEach((line, index) => {
-
       const drawLine = new PIXI.Graphics().beginFill(0xffffff)
-        .drawRoundedRect(0, (SYMBOL.HEIGHT / 2) + (line.rowFound) * (SYMBOL.HEIGHT) - thickness / 2, 
-        SLOTMACHINE.COLS * SYMBOL.WIDTH, thickness, 4).endFill()
+        .drawRoundedRect(0, (SYMBOL.HEIGHT / 2) + (line.rowFound) * (SYMBOL.HEIGHT) - thickness / 2,
+          SLOTMACHINE.COLS * SYMBOL.WIDTH, thickness, 4).endFill()
       drawLine.alpha = 0
       this.container.addChild(drawLine)
 
@@ -122,12 +127,11 @@ export default class Paylines {
 
         this.winLines[index].drawLine.push(drawSquare)
       })
-
     })
     if (APP.DEBUG) console.log('>>> DRAWLINES', this.winLines)
   }
 
-  iteratePaylines() {
+  iteratePaylines () {
     this.iterateTimeline = new TimelineMax({ repeat: -1 })
     this.winLines.forEach((line, index) => {
       this.iterateTimeline

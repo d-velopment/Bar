@@ -9,8 +9,6 @@ export default class Paytable {
     this.position = { x: -14, y: 0 }
     this.textures = SYMBOL.LIST.filter(item => item.id !== undefined).map(item => ({ id: item.id, texture: PIXI.loader.resources[item.name].texture }))
 
-    // this.winPlates = []  
-
     this.container = new PIXI.Container()
     this.container.position = this.position
     this.container.pivot.x = this.width / 2
@@ -41,7 +39,6 @@ export default class Paytable {
 
     let highestWinWidth = -1
     PAYLINES.LIST.forEach((line, row) => {
-
       const bg = new PIXI.Graphics().beginFill(0xffffff).drawRect(0, row * 38, -this.width / 2, 39).endFill()
       bg.alpha = 0
       this.container.addChild(bg)
@@ -53,21 +50,18 @@ export default class Paytable {
       textId.anchor.set(0, 0)
       this.container.addChild(textId)
 
-      highestWinWidth = (highestWinWidth == -1) ? textId.width + 5 : highestWinWidth
+      highestWinWidth = (highestWinWidth === -1) ? textId.width + 5 : highestWinWidth
 
       line.symbols.forEach((id, col) => {
         const sprite = new PIXI.Sprite(this.textures[id].texture)
         sprite.anchor.set(1, 0)
         sprite.x = -highestWinWidth - col * 43
         sprite.y = row * 38
-        sprite.scale = { x: 0.33, y: 0.33 } 
+        sprite.scale = { x: 0.33, y: 0.33 }
         this.container.addChild(sprite)
       })
-
     })
 
     game.paytable = this
-
   }
-
 }

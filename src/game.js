@@ -5,6 +5,7 @@ import SlotMachine from './components/SlotMachine'
 import SpinButton from './components/SpinButton'
 import Paylines from './components/Paylines'
 import Paytable from './components/Paytable'
+import Balance from './components/Balance'
 
 export default class Game extends Stage {
   constructor () {
@@ -18,6 +19,8 @@ export default class Game extends Stage {
   }
 
   init () {
+    global.balance = new Balance()
+
     const slotMachine = new SlotMachine([0, 2, 4])
     this.addElement(slotMachine)
     this.addMask(slotMachine)
