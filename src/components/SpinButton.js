@@ -29,7 +29,7 @@ export default class SpinButton {
 		this.reset()
 
 		document.addEventListener("Stop", (event) => {
-			if (APP.DEBUG) console.log(">>> STOP", event)
+			if (APP.DEBUG) console.log(">>> SPIN BUTTON ON STOP", event)
 			this.reset()
 		})
 	}

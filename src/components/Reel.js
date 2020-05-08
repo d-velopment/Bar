@@ -70,7 +70,6 @@ export default class Reel {
 				this.symbols[this.symbols.length-1].setTexture(this.getStripeByOffset(this.symbols[this.symbols.length-1].id + 1)[0])
 			} 
 		}
-		
 	}
 
 	spinReel(topOffset) { 
@@ -82,11 +81,10 @@ export default class Reel {
 			.to(this, duration * 0.01,	{ offset: '+=10', ease: Power2.easeIn })
 			.to(this, duration * 0.45,	{ offset: `+=${nextOffset * SYMBOL.HEIGHT * 0.75}`, ease: Linear.easeNone })
 			.to(this, duration * 0.5, 	{ offset: `+=${nextOffset * SYMBOL.HEIGHT * 0.25 + 50}`, ease: Power2.easeOut })
-			.to(this, duration * 0.12,	{ offset: '-=50', ease: Power2.easeIn })
+			.to(this, duration * 0.2,		{ offset: '-=50', ease: Bounce.easeOut })
 			.add(() => {
 				if (APP.DEBUG) 
 					console.log('>>> AFTER', this.symbols)
 			})
 	}
-
 }

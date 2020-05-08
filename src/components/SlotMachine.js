@@ -4,6 +4,7 @@ import Reel from './Reel'
 export default class SlotMachine {
 	constructor(display) {
 
+		this.display = display
 		this.width = SYMBOL.WIDTH * SLOTMACHINE.COLS
 		this.height = SYMBOL.HEIGHT * SLOTMACHINE.ROWS
 		this.position = { x: 0, y: 0 }
@@ -48,18 +49,21 @@ export default class SlotMachine {
 		const timeline = new TimelineMax()
 
 		let _display = (display !== undefined) ? display : []
-		if (APP.DEBUG) console.log('>>> DISPLAY', _display.slice(0, 3))
 
 		game.slotMachine.reels.forEach((reel, index) => {
 			_display.push(Math.floor(Math.random() * 5))
 			timeline.add(reel.spinReel(_display[index]), index * 0.1)
 		})
 
+		this.display = _display.slice(0, 3)
+		if (APP.DEBUG) console.log('>>> DISPLAY', this.display)
+
 		timeline.add(() => { 
 			if (APP.DEBUG) console.log('>>> DISPATCH STOP')
-			document.dispatchEvent(new CustomEvent("Stop"))
+			document.dispatchEvent(new CustomEvent("Stop", { 
+				detail: { display: this.display }
+			}))
 		})
 		return timeline
 	}
-
 }
