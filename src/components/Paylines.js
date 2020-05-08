@@ -42,44 +42,54 @@ export default class Paylines {
     if (APP.DEBUG) console.log('>>> CELLS', this.cells)
 
     this.winLines = []
-    this.cells.slice().forEach((symbols, currentRow) => {
-      console.log('>', currentRow, symbols)
+    
+    this.cells.forEach((symbols, currentRow) => {
+      console.error('>', currentRow, symbols)
       PAYLINES.LIST.forEach(payline => {
         
-        console.log('>>>', payline, payline.row)
+        let winLine = JSON.parse(JSON.stringify(payline))
+
+        // console.log('>>>', payline, payline.row)
         // 1.FIXED ROWS
         if ((payline.row == currentRow) && (arrayMatch(payline.symbols, symbols))) {
-          payline.rowFound = currentRow
-          console.log('>>>>>> FIXED', payline)
-          this.winLines.push(payline)
+          winLine.rowFound = currentRow
+          winLine.positions = [0, 1, 2]
+          console.warn('>>>>>> FIXED', winLine)
+          this.winLines.push(winLine)
         }
 
-        // 2.NO ROWS SET, LENGTH EQUAL
+        // 2.NO ROWS SET, FULL LENGTH
         if ((payline.row == undefined) && (symbols.length == payline.symbols.length) && (arrayMatch(payline.symbols, symbols))) {
-          payline.rowFound = currentRow
-          console.log('>>>>>> EQUAL', payline)
-          this.winLines.push(payline)
+          winLine.rowFound = currentRow
+          winLine.positions = [0, 1, 2]
+          console.warn('>>>>>> FULL', winLine)
+          this.winLines.push(winLine)
         }
 
         // 3.NO ROWS SET, ANY SYMBOLS
         if ((payline.row == undefined) && (symbols.length !== payline.symbols.length)) {
+          
           let matchPositions = []
-          console.log(payline.symbols)
+          // console.log(payline.symbols)
+
+          let currentSymbols = symbols.slice()
+
           payline.symbols.forEach((symbol, index) => {
-            console.log(symbols, symbol)
-            const position = symbols.findIndex(element => element == symbol)
+            const position = currentSymbols.findIndex(element => element == symbol)
             if (position !== -1) {
               matchPositions.push(position)
-              symbols[position] = -1
+              currentSymbols[position] = -1
+              // console.log(currentSymbols, symbol, matchPositions)
             }
           })
-          
+        
           if (matchPositions.length == payline.symbols.length) {
-            payline.rowFound = currentRow
-            payline.positions = matchPositions
-            console.log('>>>>>> ANY', symbols, payline)
-            this.winLines.push(payline)
+            winLine.rowFound = currentRow
+            winLine.positions = matchPositions
+            console.warn('>>>>>> ANY', symbols, winLine)
+            this.winLines.push(winLine)
           }
+
         }
 
       })
