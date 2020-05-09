@@ -9,16 +9,16 @@ export default class Stage {
   }
 
   createRenderer () {
-    this.renderer = PIXI.autoDetectRenderer(this.width, this.height, { 
-      transparent: (APP.DEBUG) ? false : true,
-      antialias: (APP.DEBUG) ? false : true 
+    this.renderer = PIXI.autoDetectRenderer(this.width, this.height, {
+      transparent: !(APP.DEBUG),
+      antialias: !(APP.DEBUG)
     })
     this.stage.pivot.x = -this.width / 2
     this.stage.pivot.y = -this.height / 2
     document.getElementById('container').appendChild(this.renderer.view)
     this.renderer.render(this.stage)
   }
-  
+
   addMask (element) {
     if (APP.DEBUG) return
     var bg = new PIXI.Graphics().beginFill(0xe0e000).drawRect(0, 0, element.width, element.height).endFill()

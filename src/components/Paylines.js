@@ -103,7 +103,7 @@ export default class Paylines {
 
     const betAmount = parseInt(balance.bet.value)
     const wonAmount = this.winAmount * betAmount
-    const isBigWin = betAmount == 0 ? false : ((wonAmount / parseInt(balance.bet.value) >= PAYLINES.BIGWINTHRESHOLD) ? true : false)
+    const isBigWin = betAmount === 0 ? false : ((wonAmount / parseInt(balance.bet.value) >= PAYLINES.BIGWINTHRESHOLD))
 
     if (wonAmount !== 0) {
       new TimelineMax()

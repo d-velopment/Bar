@@ -1,5 +1,6 @@
-import { APP, SYMBOL } from './Config'
+import { APP, SYMBOL, SLOTMACHINE } from './Config'
 import { TimelineMax, Elastic } from 'gsap'
+import { getStripeByOffset } from './Reel'
 
 export default class SpinButton {
   constructor () {
@@ -29,7 +30,7 @@ export default class SpinButton {
     this.reset()
 
     document.addEventListener('Spin', (event) => {
-      if (APP.DEBUG) console.log('>>> SPIN BUTTON ON SPIN (LISTEN TO ITSELF)', event)
+      if (APP.DEBUG) console.log('>>> SPIN BUTTON ON SPIN (LISTEN TO ITSELF FOR CANCEL PURPOSES)', event)
       if (event.defaultPrevented) this.reset()
     })
 
@@ -40,7 +41,18 @@ export default class SpinButton {
   }
 
   onClick () {
-    let _display // [1,3,5]
+    let _display
+    const force = document.getElementById('force').value
+    if (force.length === 6) {
+      _display = []
+      for (let col = 0; col < SLOTMACHINE.COLS; col++) {
+        const initialStripe = SLOTMACHINE.STRIPES[col].stripe
+        const symbolOffset = getStripeByOffset(col, initialStripe.findIndex(item => item === parseInt(force[col * 2])) - force[col * 2 + 1] % SLOTMACHINE.ROWS)
+        _display.push(symbolOffset[0])
+      }
+      if (APP.DEBUG) console.log('>>> FORCE DISPLAY', _display)
+    }
+
     this.container.interactive = false
 
     if (APP.DEBUG) console.log('>>> DISPATCH SPIN')
