@@ -6,8 +6,28 @@ html, body {
 	color: #fff;
 }
 
+body {
+	background: url('../assets/back.jpg');
+	background-size: cover;
+	background-position: top center;
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+}
+
 img {
 	width: 30px;
+}
+
+.wrapper {
+	display: flex;
+  align-items: center;
+	justify-content: center;
+	width: 100vw;
+	height: 100vh;
+}
+
+#container {
+	max-width: 1024px;
 }
 
 .panel {
@@ -15,32 +35,35 @@ img {
 	display: flex;
 	background-color: #27356f;
 	width: 100vw;
-	height: 40px;
-	overflow: visible;
-  white-space: nowrap;
+	height: 39px;
+	overflow: hidden;
+	justify-content: center;
 	z-index: 1;
-	flex-wrap: nowrap;
 }
 
 .logo {
+	position: fixed;
+	left: 0px;
+	top: 0px;
 	margin: 7px 50px 0px 7px;
 	overflow: hidden;
 }
 
 .balance {
-	margin: 4px 0px 0px 7px;
+	margin: 4px 3px 0px 7px;
 }
 
-input[type=text] {
-	background-color: transparent;
+input[type=text], select {
+	background-color: #37457f;
 	border: none;
 	font-size: 24px;
 	color: rgb(255, 235, 192);
 	margin-left: 10px;
 	width: 150px;
+	text-align: center;
 }
 
-input:focus, input[type]:focus {   
+input:focus, input[type]:focus, select:focus {   
 	border-color: rgba(255, 255, 255, 1);
 	box-shadow: 0 1px 1px rgba(255, 255, 255, 0.075) inset, 0 0 8px rgba(255, 255, 255, 1);
 	outline: 0 none;

@@ -10,6 +10,10 @@
         <div class="balance">BALANCE<input id="balance" type="text" value="5000" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" ></div>
         <div class="balance">BET<input id="bet" type="text" value="1" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" ></div>
         <div class="balance">WIN<input id="win" type="text" value="" disabled></div>
+        <div class="balance">FORCE<input id="force" type="text" value="" maxlength="6" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" style="margin-right: 50px;"></div>
+    </div>
+    <div class="wrapper">
+        <div id="container"></div>
     </div>
 </body>
 </html>

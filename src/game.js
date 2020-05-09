@@ -12,8 +12,8 @@ export default class Game extends Stage {
     /* eslint-disable no-new */
     super()
     window.game = this
-    this.width = window.innerWidth
-    this.height = window.innerHeight
+    this.width = (APP.DEBUG) ? window.innerWidth : 1024
+    this.height = (APP.DEBUG) ? window.innerHeight : 600
     this.createRenderer()
     new Loader(this.init.bind(this))
   }
