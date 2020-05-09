@@ -40,5 +40,6 @@ export const PAYLINES = {
     { id: 10, symbols: [2, 0], win: 5 }
   ],
   BALANCE: 5000,
-  BET: 1
+  BET: 1,
+  BIGWINTHRESHOLD: 1000
 }

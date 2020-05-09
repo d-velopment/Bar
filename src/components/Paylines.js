@@ -101,12 +101,15 @@ export default class Paylines {
       })
     })
 
-    const wonAmount = this.winAmount * parseInt(balance.bet.value)
+    const betAmount = parseInt(balance.bet.value)
+    const wonAmount = this.winAmount * betAmount
+    const isBigWin = betAmount == 0 ? false : ((wonAmount / parseInt(balance.bet.value) >= PAYLINES.BIGWINTHRESHOLD) ? true : false)
+
     if (wonAmount !== 0) {
       new TimelineMax()
         .add(() => { balance.win.value = 0 })
-        .to(balance.win, Math.min(0.5, wonAmount / 10), { value: wonAmount, roundProps: ['value'], ease: Linear.easeNone })
-        .to(balance.amount, Math.min(0.5, wonAmount / 10), { value: parseInt(balance.amount.value) + wonAmount, roundProps: ['value'], ease: Linear.easeNone }, 0)
+        .to(balance.win, isBigWin ? 3 : Math.min(0.5, wonAmount / 100), { value: wonAmount, roundProps: ['value'], ease: Linear.easeNone })
+        .to(balance.amount, isBigWin ? 3 : Math.min(0.5, wonAmount / 100), { value: parseInt(balance.amount.value) + wonAmount, roundProps: ['value'], ease: Linear.easeNone }, 0)
     }
     return this.winLines.length !== 0
   }
