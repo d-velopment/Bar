@@ -2,7 +2,7 @@ import { APP, SYMBOL, SLOTMACHINE } from './Config'
 import Symbol from './Symbol'
 
 export const getStripeByOffset = (id, topOffset) => {
-	return SLOTMACHINE.STRIPES[id].stripe.slice(topOffset, SLOTMACHINE.STRIPES[id].stripe.length).concat(SLOTMACHINE.STRIPES[id].stripe.slice(0, topOffset))
+  return SLOTMACHINE.STRIPES[id].stripe.slice(topOffset, SLOTMACHINE.STRIPES[id].stripe.length).concat(SLOTMACHINE.STRIPES[id].stripe.slice(0, topOffset))
 }
 
 export default class Reel {

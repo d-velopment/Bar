@@ -20,17 +20,12 @@ export default class Game extends Stage {
 
   init () {
     global.balance = new Balance()
-
     const slotMachine = new SlotMachine([0, 2, 4])
     this.addElement(slotMachine)
     this.addMask(slotMachine)
-
     this.addElement(new Paylines())
-
     this.addElement(new Paytable())
-
     this.addElement(new SpinButton())
-    
     this.runAnimate()
     if (APP.DEBUG) console.log('>>> READY')
   }

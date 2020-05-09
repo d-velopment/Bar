@@ -1,7 +1,7 @@
 import { APP, SYMBOL, SLOTMACHINE, PAYLINES } from './Config'
 import { getStripeByOffset } from './Reel'
 import { winPlates } from './Paytable'
-import { TimelineMax } from 'gsap'
+import { TimelineMax, Linear } from 'gsap'
 
 const arrayTranspose = arr => arr.map((col, i) => arr.map(row => row[i]))
 
@@ -101,9 +101,13 @@ export default class Paylines {
       })
     })
 
-    balance.win.value = this.winAmount * parseInt(balance.bet.value)
-    balance.amount.value = parseInt(balance.amount.value) + this.winAmount * parseInt(balance.bet.value)
-
+    const wonAmount = this.winAmount * parseInt(balance.bet.value)
+    if (wonAmount !== 0) {
+      new TimelineMax()
+        .add(() => { balance.win.value = 0 })
+        .to(balance.win, Math.min(0.5, wonAmount / 10), { value: wonAmount, roundProps: ['value'], ease: Linear.easeNone })
+        .to(balance.amount, Math.min(0.5, wonAmount / 10), { value: parseInt(balance.amount.value) + wonAmount, roundProps: ['value'], ease: Linear.easeNone }, 0)
+    }
     return this.winLines.length !== 0
   }
 

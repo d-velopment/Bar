@@ -9,9 +9,7 @@ export default class Stage {
   }
 
   createRenderer () {
-    this.renderer = PIXI.autoDetectRenderer(this.width, this.height, {
-      antialias: true
-    },false, true)
+    this.renderer = PIXI.autoDetectRenderer(this.width, this.height, { antialias: true })
     this.stage.pivot.x = -this.width / 2
     this.stage.pivot.y = -this.height / 2
     document.body.appendChild(this.renderer.view)

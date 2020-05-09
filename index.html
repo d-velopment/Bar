@@ -7,9 +7,9 @@
 <body>
     <div class="panel">
         <div class="logo"><img src="./assets/7.png" /><img src="./assets/7.png" /><img src="./assets/7.png" /></div>
-        <div class="balance">BALANCE<input id="balance" type="text" value="5000"></div>
-        <div class="balance">BET<input id="bet" type="text" value="1"></div>
-        <div class="balance">WIN<input id="win" type="text" value="0" disabled></div>
+        <div class="balance">BALANCE<input id="balance" type="text" value="5000" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" ></div>
+        <div class="balance">BET<input id="bet" type="text" value="1" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" ></div>
+        <div class="balance">WIN<input id="win" type="text" value="" disabled></div>
     </div>
 </body>
 </html>
