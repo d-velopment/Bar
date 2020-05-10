@@ -22,7 +22,17 @@
     "start": "http-server .\\"
   },
   "standard": {
-    "globals": [ "game", "PIXI", "TimelineMax", "Linear", "Power2", "Bounce", "CustomEvent", "Event", "balance" ]
+    "globals": [
+      "game",
+      "PIXI",
+      "TimelineMax",
+      "Linear",
+      "Power2",
+      "Bounce",
+      "CustomEvent",
+      "Event",
+      "balance"
+    ]
   },
   "browserify": {
     "transform": [
@@ -50,6 +60,5 @@
     "nodemon": "^2.0.3",
     "pixi.js": "4.2.2",
     "pixi.js-legacy": "^5.2.1"
-  },
-  "dependencies": {}
+  }
 }

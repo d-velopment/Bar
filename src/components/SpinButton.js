@@ -42,22 +42,24 @@ export default class SpinButton {
 
   onClick () {
     let _display
+    const _reelsShift = []
     const force = document.getElementById('force').value
     if (force.length === 6) {
       _display = []
       for (let col = 0; col < SLOTMACHINE.COLS; col++) {
         const initialStripe = SLOTMACHINE.STRIPES[col].stripe
-        const symbolOffset = getStripeByOffset(col, initialStripe.findIndex(item => item === parseInt(force[col * 2])) - force[col * 2 + 1] % SLOTMACHINE.ROWS)
+        const symbolOffset = getStripeByOffset(col, initialStripe.findIndex(item => item === parseInt(force[col * 2]) - Math.floor(force[col * 2 + 1] / 2)))
+        _reelsShift.push(force[col * 2 + 1] % 2 !== 0)
         _display.push(symbolOffset[0])
       }
-      if (APP.DEBUG) console.log('>>> FORCE DISPLAY', _display)
+      if (APP.DEBUG) console.log('>>> FORCE DISPLAY', _display, _reelsShift)
     }
 
     this.container.interactive = false
 
     if (APP.DEBUG) console.log('>>> DISPATCH SPIN')
     document.dispatchEvent(new CustomEvent('Spin', {
-      detail: { display: _display },
+      detail: { display: _display, reelsShift: _reelsShift },
       cancelable: true
     }))
 

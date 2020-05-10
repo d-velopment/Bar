@@ -11,7 +11,8 @@ export const SYMBOL = {
     { id: 2, name: '2xBAR' },
     { id: 3, name: '7' },
     { id: 4, name: 'Cherry' },
-    { name: 'Spin' }
+    { name: 'Spin' },
+    { name: 'Reel' }
   ]
 }
 

@@ -1,5 +1,6 @@
 import { APP, SYMBOL, SLOTMACHINE, PAYLINES } from './Config'
 import { getStripeByOffset } from './Reel'
+import { reelsShift } from './SlotMachine'
 import { winPlates } from './Paytable'
 import { TimelineMax, Linear } from 'gsap'
 
@@ -62,9 +63,15 @@ export default class Paylines {
   }
 
   getSlotMachineCells (display) {
-    return arrayTranspose(display.map((element, index) => (
+    const reelStripes = display.map((element, index) => (
       getStripeByOffset(index, element).slice(0, SLOTMACHINE.ROWS)
-    )))
+    ))
+    reelStripes.map((stripe, row) => {
+      stripe.map((element, index) => {
+        stripe.splice(index * 2 + (reelsShift[row] ? 0 : 1), 0, null)
+      })
+    })
+    return arrayTranspose(reelStripes)
   }
 
   calculatePaylines (display) {
@@ -84,6 +91,7 @@ export default class Paylines {
 
         payline.symbols.forEach((symbol, index) => {
           const position = currentSymbols.findIndex(element => element === symbol)
+
           if (position !== -1) {
             matchPositions.push(position)
             currentSymbols[position] = -1
@@ -118,7 +126,7 @@ export default class Paylines {
     const thickness = 8
     this.winLines.forEach((line, index) => {
       const drawLine = new PIXI.Graphics().beginFill(0xffffff)
-        .drawRoundedRect(0, (SYMBOL.HEIGHT / 2) + (line.rowFound) * (SYMBOL.HEIGHT) - thickness / 2,
+        .drawRoundedRect(0, (SYMBOL.HEIGHT / 2) + SYMBOL.HEIGHT / 2 + (line.rowFound) * (SYMBOL.HEIGHT / 2) - thickness / 2,
           SLOTMACHINE.COLS * SYMBOL.WIDTH, thickness, 4).endFill()
       drawLine.alpha = 0
       this.container.addChild(drawLine)
@@ -128,7 +136,7 @@ export default class Paylines {
 
       line.positions.forEach(position => {
         const drawSquare = new PIXI.Graphics().beginFill(0xffffff, 0).lineStyle(thickness, 0xff0000)
-          .drawRoundedRect(position * SYMBOL.WIDTH, (line.rowFound) * (SYMBOL.HEIGHT), SYMBOL.WIDTH, SYMBOL.HEIGHT, thickness * 2)
+          .drawRoundedRect(position * SYMBOL.WIDTH, SYMBOL.HEIGHT / 2 + (line.rowFound) * (SYMBOL.HEIGHT / 2), SYMBOL.WIDTH, SYMBOL.HEIGHT, thickness * 2)
         drawSquare.alpha = 0
         this.container.addChild(drawSquare)
 

@@ -1,6 +1,8 @@
 import { APP, SYMBOL, SLOTMACHINE } from './Config'
 import Reel from './Reel'
 
+export let reelsShift = []
+
 export default class SlotMachine {
   constructor (display) {
     this.display = display
@@ -25,10 +27,19 @@ export default class SlotMachine {
       this.drawSlotMachine(display)
     }
 
+    [...Array(SLOTMACHINE.ROWS).keys()].forEach(column => {
+      const sprite = new PIXI.Sprite(PIXI.loader.resources.Reel.texture)
+      sprite.anchor.set(0, 0)
+      sprite.scale.x = 0.5
+      sprite.scale.y = 0.5
+      sprite.position.x = column * SYMBOL.WIDTH
+      this.container.addChild(sprite)
+    })
+
     document.addEventListener('Spin', (event) => {
       if (event.defaultPrevented) return
-      if (APP.DEBUG) console.log('>>> SPIN', event)
-      this.spinSlotMachine(event.detail.display)
+      if (APP.DEBUG) console.log('>>> SPIN', event, event.detail.display, event.detail.reelsShift)
+      this.spinSlotMachine(event.detail.display, event.detail.reelsShift)
     })
   }
 
@@ -42,18 +53,21 @@ export default class SlotMachine {
     return this
   }
 
-  spinSlotMachine (display) {
+  spinSlotMachine (display, inReelsShift = []) {
     const timeline = new TimelineMax()
 
     const _display = (display !== undefined) ? display : []
+    reelsShift = []
 
     game.slotMachine.reels.forEach((reel, index) => {
-      _display.push(Math.floor(Math.random() * 5))
-      timeline.add(reel.spinReel(_display[index]), index * 0.1)
+      _display.push(Math.floor(Math.random() * SLOTMACHINE.STRIPES[index].stripe.length))
+      const isShifted = (inReelsShift.length === 0 ? ((Math.random() < 0.5)) : inReelsShift[index])
+      reelsShift.push(isShifted)
+      timeline.add(reel.spinReel(_display[index], isShifted), index * 0.1)
     })
 
     this.display = _display.slice(0, 3)
-    if (APP.DEBUG) console.log('>>> DISPLAY', this.display)
+    if (APP.DEBUG) console.log('>>> DISPLAY', this.display, reelsShift)
 
     timeline.add(() => {
       if (APP.DEBUG) console.log('>>> DISPATCH STOP')
