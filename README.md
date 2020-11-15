@@ -1,6 +1,6 @@
 # Bar Slot Machine
 
-3x3 slot machine with 5 symbols.
+3x3 slot machine with 5 symbols. Demo @ http://d-velopment.digital/bar7/
 
 ## Play
 
